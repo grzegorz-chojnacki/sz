@@ -1,14 +1,12 @@
 'use strict'
 
-const push     = (arr, a) => { arr.push(a); return a }
-const insertAt = (index, e, arr) => arr.splice(index, 0, e)
+const push = (arr, a) => { arr.push(a); return a }
 
 class TaskMaster {
   machines = [ new Machine('M0') ]
 
   schedule = tasks => {
     tasks.map(task => this.getMachineFor(task).schedule(task))
-    this.machines.forEach(Machine.fillGaps)
     return this.machines
   }
 
@@ -20,22 +18,12 @@ class TaskMaster {
 
 class Machine {
   static highestCMax  = (max, m) => Math.max(max, m.cMax)
-  static fillGaps     = machine => machine.tasks
-    .forEach((task, index) => machine.maybeFillBefore(task, index))
 
   get cMax() { return this.tasks[this.tasks.length - 1].endTime }
 
   constructor(id) {
     this.id = id
     this.tasks = []
-  }
-
-  maybeFillBefore = (task, index) => {
-    if (index > 0) {
-      const prev = this.tasks[index - 1]
-      const gap = Task.gap(prev, task)
-      gap > 0 && insertAt(index, new Task('', gap, [prev]), this.tasks)
-    }
   }
 
   schedule = task => this.canSchedule(task) && this.tasks.push(task)
