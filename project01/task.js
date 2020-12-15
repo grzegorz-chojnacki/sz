@@ -14,41 +14,26 @@ function areCyclic(tasks) {
   return check(edges)
 }
 
-function schedule(tasks) {
-  tasks.forEach(task => task.findCriticalTask())
-  return Task.startTimeOrder(tasks).map(task => task.toStringWithTime())
-}
-
 class Task {
-  static topologicalOrder = tasks => tasks.sort((a, b) => a.getComplexity() - b.getComplexity())
+  static topologicalOrder = tasks => tasks.sort((a, b) => a.complexity - b.complexity)
   static startTimeOrder   = tasks => tasks.sort((a, b) => a.startTime - b.startTime)
-  static complexityDepth  = (prevMax, task) => Math.max(prevMax, task.getComplexity() + 1)
+  static complexityDepth  = (prevMax, task) => Math.max(prevMax, task.complexity + 1)
   static minStartTime     = (prevMax, task) => Math.max(prevMax, task.endTime)
+  static critical         = task => task.endTime === this.startTime
 
-  constructor(id, time, required = []) {
+  constructor(id, time = 1, required = []) {
     this.id         = id
     this.time       = time
     this.required   = required
-    this.complexity = undefined
-    this.startTime  = undefined
-    this.endTime    = undefined
-    this.critical   = undefined
+    this.critical   = this.required.find(Task.critical)
+    this.complexity = this.required.reduce(Task.complexityDepth, 0)
+    this.startTime  = this.required.reduce(Task.minStartTime, 0)
+    this.endTime    = this.startTime + this.time
   }
 
-  completeRequired() {
-    this.required.forEach(task => task.completeRequired())
-    this.startTime = this.startTime || this.required.reduce(Task.minStartTime, 0)
-    this.endTime = this.startTime + this.time
-  }
+  getCriticalPath = () => this.critical
+    ? [this.critical, ...this.critical.getCriticalPath()] : []
 
-  findCriticalTask() {
-    this.critical = this.required.find(task => task.endTime === this.startTime)
-  }
-
-  getComplexity = () => this.complexity || (this.complexity = this.required.reduce(Task.complexityDepth, 0))
-
-  asEdges = () => this.required.map(task => ({ in: this.id, out: task.id }))
-
-  toString         = () => `[${this.id}:${this.complexity}]`
-  toStringWithTime = () => `[${this.id}@${this.startTime}:${this.endTime}]`
+  asEdges  = () => this.required.map(task => ({ in: this.id, out: task.id }))
+  toString = () => `${this.id}[${this.startTime}:${this.endTime}]`
 }

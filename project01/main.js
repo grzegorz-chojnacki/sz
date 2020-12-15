@@ -17,7 +17,5 @@ console.log('Cyclic tasks?: ', areCyclic(tasks))
 // const cyclic = [z9, ...tasks]
 // console.log('cyclic tasks: ', areCyclic(cyclic))
 
-tasks.forEach(task => task.completeRequired())
-console.log(tasks.map(task => task.toStringWithTime()))
-
-console.log(Machine.makeMachines(tasks).map(m => m.toString()))
+console.log(tasks.map(task => task.toString()))
+console.log(Machine.makeMachinesFor(tasks).map(m => m.toString()))

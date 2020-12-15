@@ -1,21 +1,16 @@
 'use strict'
 
 class Machine {
-  static makeMachines(tasks) {
+  static makeMachinesFor(tasks) {
     const machines = [ new Machine(0) ]
 
-    const prepareNew = id => {
-      const machine = new Machine(id)
+    const extend = machines => {
+      const machine = new Machine(machines.length)
       machines.push(machine)
       return machine
     }
 
-    tasks.forEach(task => {
-      const machine = machines.find(m => m.canSchedule(task))
-        || prepareNew(machines.length)
-
-      machine.schedule(task)
-    })
+    tasks.forEach(task => (machines.find(m => m.canSchedule(task)) || extend(machines)).schedule(task))
 
     return machines
   }
@@ -30,5 +25,5 @@ class Machine {
   canSchedule = task => !this.timetable.some(slot =>
     task.startTime < slot.endTime && slot.startTime < task.endTime)
 
-  toString = () => `M${this.id}: ${this.timetable.map(task => task.toStringWithTime())}`
+  toString = () => `M${this.id}: ${this.timetable.map(task => task.toString())}`
 }
