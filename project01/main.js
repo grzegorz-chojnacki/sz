@@ -18,4 +18,4 @@ console.log('Cyclic tasks?: ', areCyclic(tasks))
 // console.log('cyclic tasks: ', areCyclic(cyclic))
 
 console.log(tasks.map(task => task.toString()))
-console.log(Machine.makeMachinesFor(tasks).map(m => m.toString()))
+console.log(new TaskMaster().schedule(tasks).map(m => m.toString()))
