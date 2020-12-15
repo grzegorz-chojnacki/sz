@@ -20,6 +20,7 @@ class Task {
   static complexityDepth  = (prevMax, task) => Math.max(prevMax, task.complexity + 1)
   static minStartTime     = (prevMax, task) => Math.max(prevMax, task.endTime)
   static critical         = task => task.endTime === this.startTime
+  static intersects       = (a, b) => a.startTime < b.endTime && b.startTime < a.endTime
 
   constructor(id, time = 1, required = []) {
     this.id         = id

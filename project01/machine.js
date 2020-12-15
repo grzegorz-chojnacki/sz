@@ -1,15 +1,16 @@
 'use strict'
 
+const push = (a, arr = []) => {
+  arr.push(a)
+  return a
+}
+
 class TaskMaster {
   machines = [ new Machine(0) ]
   getMachineFor = task => this.machines.find(m => m.canSchedule(task))
     || this.prepareNew()
 
-  prepareNew = () => {
-    const machine = new Machine(this.machines.length)
-    this.machines.push(machine)
-    return machine
-  }
+  prepareNew = () => push(new Machine(this.machines.length), this.machines)
 
   schedule = tasks => {
     tasks.forEach(task => this.getMachineFor(task).schedule(task))
@@ -23,10 +24,11 @@ class Machine {
     this.timetable = []
   }
 
-  schedule = task => this.canSchedule(task) ? this.timetable.push(task) : null
+  canSchedule = task => !this.timetable
+    .some(slot => Task.intersects(task, slot))
+
+  schedule = task => this.canSchedule(task)
+    ? push(task, this.timetable) : null
+
   toString = () => `M${this.id}: ${this.timetable.map(task => task.toString())}`
-
-  canSchedule = task => !this.timetable.some(slot =>
-    task.startTime < slot.endTime && slot.startTime < task.endTime)
-
 }
