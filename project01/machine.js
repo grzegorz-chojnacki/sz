@@ -19,23 +19,23 @@ class TaskMaster {
 }
 
 class Machine {
-  static highestCMax = (max, m) => Math.max(max, m.cMax)
-  static fillGaps = machine => machine.tasks
-    .forEach((task, index) => Machine.buba(task, index, machine.tasks))
+  static highestCMax  = (max, m) => Math.max(max, m.cMax)
+  static fillGaps     = machine => machine.tasks
+    .forEach((task, index) => machine.maybeFillBefore(task, index))
 
   get cMax() { return this.tasks[this.tasks.length - 1].endTime }
-
-  static buba = (task, index, tasks) => {
-    if (index > 0) {
-      const prev = tasks[index - 1]
-      const gap = Task.gap(prev, task)
-      gap > 0 && insertAt(index, new Task('', gap, [prev]), tasks)
-    }
-  }
 
   constructor(id) {
     this.id = id
     this.tasks = []
+  }
+
+  maybeFillBefore = (task, index) => {
+    if (index > 0) {
+      const prev = this.tasks[index - 1]
+      const gap = Task.gap(prev, task)
+      gap > 0 && insertAt(index, new Task('', gap, [prev]), this.tasks)
+    }
   }
 
   schedule = task => this.canSchedule(task) && this.tasks.push(task)

@@ -8,9 +8,8 @@ const gui = new class {
 
   drawSchedule(machines = []) {
     const maxWidth = machines.reduce(Machine.highestCMax, 0) - 1
-
-    this.table.innerHTML  = this.makeTimeHeader(maxWidth)
-    this.table.innerHTML += machines.map(this.makeMachineRow).reduce(join)
+    this.table.innerHTML = this.makeTimeHeader(maxWidth)
+      + machines.map(this.makeMachineRow).reduce(join)
   }
 
   makeMachineHeader = machine => `<th>${machine.id}</th>`
