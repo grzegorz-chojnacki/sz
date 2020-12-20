@@ -24,23 +24,21 @@ class Task {
         tasks.push(new Task(node.id, node.time, required))
       })
     } catch (e) { gui.error('Błędny format listy zadań', e) }
-    tasks.forEach(task => task.updateRequired())
     return tasks
   }
 
   constructor(id, time = 1, required = []) {
     this.id           = id
     this.time         = time
-    this.requiredFor  = []
     this.required     = required
+    this.requiredFor  = []
     this.startTime    = this.required.reduce(Task.maxEndTime, 0)
     this.endTime      = this.startTime + this.time
     this.critical     = this.required.find(task => task.endTime === this.startTime)
     this.maxStartTime = this.startTime
     this.maxEndTime   = this.endTime
+    this.required.forEach(task => task.requiredFor.push(this))
   }
-
-  updateRequired = () => this.required.forEach(task => task.requiredFor.push(this))
 
   shiftRigthIn = (tasks, cMax) => {
     this.maxEndTime = Math.min(this.minRequiredFor(cMax), this.minInList(tasks, cMax))
