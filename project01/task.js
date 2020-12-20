@@ -64,5 +64,5 @@ class Task {
     ? [this.critical, ...this.critical.getCriticalPath()]
     : []
 
-  toString = () => `${this.id}[${this.startTime}:${this.endTime}]`
+  toString = () => `${this.id}: ${this.time}`
 }

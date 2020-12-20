@@ -16,5 +16,4 @@ const tasks = [z7, z5, z2, z8, z1, z4, z6, z3]
 // const tasks = [z8, z7, z6, z5, z4, z3, z2, z1, z9]
 
 const machines = new TaskMaster().schedule(tasks)
-gui.drawNormalSchedule(machines)
-gui.drawDelayedSchedule(machines)
+gui.draw(machines)

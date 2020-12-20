@@ -4,6 +4,10 @@ body {
   font-family: monospace;
 }
 
+#graph {
+  height: 500px;
+}
+
 table {
   margin: 0 auto 2em;
   background-color: white;

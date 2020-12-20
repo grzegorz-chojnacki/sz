@@ -4,11 +4,31 @@ const join = (acc, str) => acc + str
 const seq  = (n, arr = []) => n < 0 ? arr : seq(n - 1, [n, ...arr])
 
 const gui = new class {
+  graph           = document.getElementById('graph')
   normalSchedule  = document.getElementById('table1')
   delayedSchedule = document.getElementById('table2')
 
-  drawNormalSchedule  = machines => this.drawSchedule(machines, this.normalSchedule, Task.normal)
-  drawDelayedSchedule = machines => this.drawSchedule(machines, this.delayedSchedule, Task.delayed)
+  draw(machines) {
+    this.drawGraph(machines.flatMap(m => m.tasks))
+    this.drawSchedule(machines, this.normalSchedule, Task.normal)
+    this.drawSchedule(machines, this.delayedSchedule, Task.delayed)
+  }
+
+  drawGraph = tasks => {
+    const data = {
+      nodes: tasks.map(task => ({ id: task.toString() })),
+      edges: tasks.flatMap(task => task.required
+        .map(r => ({ from: r.toString(), to: task.toString() })))
+    }
+    const chart = anychart.graph(data)
+
+    const nodes = chart.nodes()
+    nodes.labels().enabled(true)
+    nodes.normal().height(20)
+
+    chart.title("Network Graph showing the battles in Game of Thrones")
+    chart.container('graph').draw()
+  }
 
   drawSchedule(machines = [], context, delayStrategy) {
     const maxWidth = Machine.highestCMax(machines)
