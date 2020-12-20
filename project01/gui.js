@@ -14,7 +14,7 @@ const gui = new class {
     const tasks = Task.endTimeOrder(machines.flatMap(m => m.tasks))
     this.drawGraph(tasks)
     this.drawCriticalPath(tasks[tasks.length-1].getCriticalPath())
-    this.drawSchedule(machines, this.normalSchedule, Task.normal)
+    this.drawSchedule(machines, this.normalSchedule,  Task.normal)
     this.drawSchedule(machines, this.delayedSchedule, Task.delayed)
   }
 

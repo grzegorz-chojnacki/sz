@@ -5,15 +5,19 @@ body {
   text-align: center;
 }
 
+section {
+  margin: 0 auto 2em;
+  max-width: 1200px;
+  overflow-x: auto;
+}
+
 #graph {
   height: 300px;
   width: 800px;
   margin: 0 auto;
-  /* border: 1px solid; */
 }
 
 table {
-  margin: 0 auto 2em;
   background-color: white;
   border: 1px solid black;
   border-collapse: collapse;
@@ -27,7 +31,6 @@ th, td {
   padding: 0.5em;
   border: 1px solid;
 }
-
 
 td.gap {
   border: none;
