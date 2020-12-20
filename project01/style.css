@@ -17,4 +17,9 @@ th, td {
   border: 1px solid;
 }
 
-td.gap { border: none }
+td > em { opacity: 0.4 }
+
+td.gap {
+  border: none;
+  background-color: #00000010;
+}

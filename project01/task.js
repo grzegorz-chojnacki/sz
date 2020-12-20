@@ -18,7 +18,6 @@ function haveCycle(tasks) {
 class Task {
   static startTimeOrder   = tasks  => tasks.sort((a, b) => a.startTime  - b.startTime)
   static topologicalOrder = tasks  => tasks.sort((a, b) => a.complexity - b.complexity)
-  static gap              = (a, b) => b.startTime - a.endTime
   static intersects       = (a, b) => a.startTime < b.endTime && b.startTime < a.endTime
   static complexityDepth  = (prevMax, task) => Math.max(prevMax, task.complexity + 1)
   static minStartTime     = (prevMax, task) => Math.max(prevMax, task.endTime)

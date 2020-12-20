@@ -9,9 +9,9 @@ const z6 = new Task('Z6', 11, [z3, z4])
 const z7 = new Task('Z7', 2,  [z4])
 const z8 = new Task('Z8', 3,  [z5, z7])
 
-const tasks = Task.topologicalOrder([z7, z5, z2, z8, z1, z4, z6, z3])
-tasks.forEach(task => console.log(task.toString()))
-console.log('Tasks have a cycle?: ', haveCycle(tasks))
+const tasks = [z7, z5, z2, z8, z1, z4, z6, z3]
+// tasks.forEach(task => console.log(task.toString()))
+// console.log('Tasks have a cycle?: ', haveCycle(tasks))
 
 // const z9 = new Task('Z9', 1); z9.required = [z9]
 // const cyclic = [z9, ...tasks]
