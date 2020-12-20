@@ -15,11 +15,12 @@ function haveCycle(tasks) {
   return check(tasks.flatMap(asEdges))
 }
 
-const next = (arr, a) => arr[arr.findIndex(x => x === a) + 1]
+const next   = (arr, a)  => arr[arr.findIndex(x => x === a) + 1]
+const unique = (element, index, arr) => arr.indexOf(element) !== index
 
 class Task {
   static startTimeOrder   = tasks  => tasks.sort((a, b) => a.startTime  - b.startTime)
-  static endTimeOrder     = tasks  => tasks.sort((a, b) => a.entTime    - b.endTime)
+  static endTimeOrder     = tasks  => tasks.sort((a, b) => a.endTime    - b.endTime)
   static topologicalOrder = tasks  => tasks.sort((a, b) => a.complexity - b.complexity)
   static intersects       = (a, b) => a.startTime < b.endTime && b.startTime < a.endTime
   static complexityDepth  = (prevMax, task) => Math.max(prevMax, task.complexity + 1)
@@ -28,15 +29,35 @@ class Task {
   static normal           = task => task
   static delayed          = task => ({ ...task, startTime: task.maxStartTime, endTime: task.maxEndTime })
 
+  static parseList = (template = []) => {
+    const tasks = template.map(node => new Task(node.id, node.time))
+    tasks.forEach(task => {
+      const node = template.find(node => node.id === task.id)
+      const required = node.required.map(id => tasks.find(task => task.id === id))
+      task.setRequired(required)
+    })
+    return tasks
+  }
+
   constructor(id, time = 1, required = []) {
     this.id           = id
     this.time         = time
     this.required     = required
     this.complexity   = this.required.reduce(Task.complexityDepth, 0)
     this.startTime    = this.required.reduce(Task.maxEndTime, 0)
-    this.critical     = this.required.find(task => task.endTime === this.startTime)
     this.endTime      = this.startTime + this.time
+    this.critical     = this.required.find(task => task.endTime === this.startTime)
     this.requiredFor  = []
+    this.maxStartTime = this.startTime
+    this.maxEndTime   = this.endTime
+  }
+
+  setRequired = (required = []) => {
+    this.required     = required
+    this.complexity   = this.required.reduce(Task.complexityDepth, 0)
+    this.startTime    = this.required.reduce(Task.maxEndTime, 0)
+    this.endTime      = this.startTime + this.time
+    this.critical     = this.required.find(task => task.endTime === this.startTime)
     this.maxStartTime = this.startTime
     this.maxEndTime   = this.endTime
   }
