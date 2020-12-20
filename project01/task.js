@@ -22,6 +22,8 @@ class Task {
   static complexityDepth  = (prevMax, task) => Math.max(prevMax, task.complexity + 1)
   static maxEndTime       = (prevMax, task) => Math.max(prevMax, task.endTime)
   static minMaxStartTime  = (prevMin, task) => Math.min(prevMin, task.maxStartTime)
+  static normal           = task => task
+  static delayed          = task => ({ ...task, startTime: task.maxStartTime, endTime: task.maxEndTime })
 
   constructor(id, time = 1, required = []) {
     this.id           = id

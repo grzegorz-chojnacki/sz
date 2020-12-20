@@ -20,5 +20,5 @@ const tasks = [z7, z5, z2, z8, z1, z4, z6, z3]
 
 const machines = new TaskMaster().schedule(tasks)
 machines.forEach(m => console.log(m.toString()))
-gui.drawSchedule(machines)
-gui.drawDelayedSchedule(machines)
+gui.drawSchedule('table1', machines)
+gui.drawSchedule('table2', machines, Task.delayed)
