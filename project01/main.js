@@ -12,4 +12,4 @@ const tasks = Task.parseList([
   // { id: 'Z8', time: 1,  required: ['Z8'] }
 ])
 
-gui.draw(new TaskMaster().schedule(tasks))
+gui.draw(schedule(tasks))

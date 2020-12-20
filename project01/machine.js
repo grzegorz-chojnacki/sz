@@ -1,22 +1,18 @@
 'use strict'
 
-class TaskMaster {
-  machines = [ new Machine('M0') ]
+const schedule = tasks => {
+  const machines = [ new Machine('M0') ]
+  const add = m => { machines.push(m); return m }
+  const getMachineFor = task => machines.find(m => m.canSchedule(task))
+    || add(new Machine(`M${machines.length}`))
 
-  schedule = tasks => {
-    tasks.forEach(task => this.getMachineFor(task).schedule(task))
+  tasks.forEach(task => getMachineFor(task).schedule(task))
 
-    this.machines.forEach(m => m.tasks.slice()
-      .reverse()
-      .forEach(task => task.shiftRigthIn(m.tasks, Machine.highestCMax(this.machines))))
+  machines.forEach(m => m.tasks.slice()
+    .reverse()
+    .forEach(task => task.shiftRigthIn(m.tasks, Machine.highestCMax(machines))))
 
-    return this.machines
-  }
-
-  getMachineFor = task => this.machines.find(m => m.canSchedule(task))
-    || this.add(new Machine(`M${this.machines.length}`))
-
-  add = m => { this.machines.push(m); return m }
+  return machines
 }
 
 class Machine {
