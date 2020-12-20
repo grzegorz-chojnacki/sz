@@ -15,6 +15,8 @@ function haveCycle(tasks) {
   return check(tasks.flatMap(asEdges))
 }
 
+const next = (arr, a) => arr[arr.findIndex(x => x === a) + 1]
+
 class Task {
   static startTimeOrder   = tasks  => tasks.sort((a, b) => a.startTime  - b.startTime)
   static topologicalOrder = tasks  => tasks.sort((a, b) => a.complexity - b.complexity)
@@ -40,15 +42,17 @@ class Task {
 
   updateRequired = () => this.required.forEach(task => task.requiredFor.push(this))
 
-  shiftRigthIn = (context, maxScheduleLength) => {
-    this.maxEndTime = Math.min(this.minimumRequiredFor(maxScheduleLength), this.minimumInContext(context, maxScheduleLength))
+  shiftRigthIn = (context, cMax) => {
+    this.maxEndTime = Math.min(
+      this.minimumRequiredFor(cMax),
+      this.minimumInContext(context, cMax))
     this.maxStartTime = this.maxEndTime - this.time
   }
 
-  minimumRequiredFor = maxScheduleLength => this.requiredFor.reduce(Task.minMaxStartTime, maxScheduleLength)
-  minimumInContext   = (context, maxScheduleLength) => next(context, this) !== undefined
+  minimumRequiredFor = cMax => this.requiredFor.reduce(Task.minMaxStartTime, cMax)
+  minimumInContext   = (context, cMax) => next(context, this) !== undefined
     ? next(context, this).maxStartTime
-    : maxScheduleLength
+    : cMax
 
   updateMaxEndTime = time => {
     this.maxEndTime = Math.min(this.maxEndTime, time)
@@ -60,5 +64,5 @@ class Task {
     ? [this.critical, ...this.critical.getCriticalPath()]
     : []
 
-  toString = () => `${this.id}[${this.startTime}:${this.endTime}~${this.maxStartTime}:${this.maxStartTime + this.time}]`
+  toString = () => `${this.id}[${this.startTime}:${this.endTime}]`
 }

@@ -7,11 +7,11 @@ const gui = new class {
   normalSchedule  = document.getElementById('table1')
   delayedSchedule = document.getElementById('table2')
 
-  drawNormalSchedule  = (machines = []) => this.drawSchedule(machines, this.normalSchedule, Task.normal)
-  drawDelayedSchedule = (machines = []) => this.drawSchedule(machines, this.delayedSchedule, Task.delayed)
+  drawNormalSchedule  = machines => this.drawSchedule(machines, this.normalSchedule, Task.normal)
+  drawDelayedSchedule = machines => this.drawSchedule(machines, this.delayedSchedule, Task.delayed)
 
   drawSchedule(machines = [], context, delayStrategy) {
-    const maxWidth = machines.reduce(Machine.highestCMax, 0)
+    const maxWidth = Machine.highestCMax(machines)
     context.innerHTML = this.makeTimeHeader(maxWidth) + machines
       .map(m => this.makeMachineRow(maxWidth)(m.id, m.tasks.map(delayStrategy)))
       .reduce(join)
@@ -33,7 +33,7 @@ const gui = new class {
     ? '<td class="gap"></td>'.repeat(task.startTime - arr[i - 1].endTime)
     : '<td class="gap"></td>'.repeat(task.startTime)
 
-  format = task => `${task.id} <em>${task.startTime}->${task.endTime}</em>`
+  format = task => `${task.id}`
 
   maybeFillGapAfter = (task, n) => '<td class="gap"></td>'.repeat(n - task.endTime)
 }()
