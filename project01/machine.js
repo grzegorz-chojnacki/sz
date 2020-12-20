@@ -25,7 +25,7 @@ class Machine {
     this.tasks = []
   }
 
-  schedule = task => this.canSchedule(task) && this.tasks.push(task)
+  schedule    = task => this.tasks.push(task)
   canSchedule = task => !this.tasks.some(slot => Task.intersects(task, slot))
 
   toString = () => `${this.id}: ${this.tasks.map(task => task.toString())}`
