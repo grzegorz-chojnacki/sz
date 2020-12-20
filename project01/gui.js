@@ -9,15 +9,15 @@ const gui = new class {
 
   drawSchedule(machines = []) {
     const maxWidth = machines.reduce(Machine.highestCMax, 0)
-    this.table2.innerHTML = this.makeTimeHeader(maxWidth)
+    this.table.innerHTML = this.makeTimeHeader(maxWidth)
       + machines.map(m => this.makeMachineRow(maxWidth)(m, m.tasks)).reduce(join)
   }
 
-  // drawDelayedSchedule(machines = []) {
-  //   const maxWidth = machines.reduce(Machine.highestCMax, 0)
-  //   this.table.innerHTML = this.makeTimeHeader(maxWidth)
-  //     + machines.map(this.makeMachineRow(maxWidth)).reduce(join)
-  // }
+  drawDelayedSchedule(machines = []) {
+    const maxWidth = machines.reduce(Machine.highestCMax, 0)
+    this.table2.innerHTML = this.makeTimeHeader(maxWidth)
+      + machines.map(m => this.makeMachineRow2(maxWidth)(m, m.tasks)).reduce(join)
+  }
 
   makeTimeHeader = n => `<tr><th></th>${seq(n - 1).map(time => `<th>${time}</th>`).reduce(join)}</tr>`
 
@@ -27,15 +27,30 @@ const gui = new class {
     ${this.maybeFillGapAfter(tasks[tasks.length - 1], n)}
   </tr>`
 
+  makeMachineRow2 = n => (machine, tasks) => `<tr>
+    <th>${machine.id}</th>
+    ${tasks.map(this.makeTaskCell2).reduce(join)}
+    ${this.maybeFillGapAfter2(tasks[tasks.length - 1], n)}
+  </tr>`
+
   makeTaskCell = (task, i, arr) =>
     `${this.maybeFillGapBefore(task, i, arr)}
+    <td colspan="${task.time}">${this.format(task)}</td>`
+
+  makeTaskCell2 = (task, i, arr) =>
+    `${this.maybeFillGapBefore2(task, i, arr)}
     <td colspan="${task.time}">${this.format(task)}</td>`
 
   maybeFillGapBefore = (task, i, arr) => i > 0
     ? '<td class="gap"></td>'.repeat(task.startTime - arr[i - 1].endTime)
     : '<td class="gap"></td>'.repeat(task.startTime)
 
+  maybeFillGapBefore2 = (task, i, arr) => i > 0
+    ? '<td class="gap"></td>'.repeat(task.maxStartTime - arr[i - 1].maxEndTime)
+    : '<td class="gap"></td>'.repeat(task.maxStartTime)
+
   format = task => `${task.id} <em>${task.startTime}->${task.endTime}</em>`
 
-  maybeFillGapAfter = (task, n) => '<td class="gap"></td>'.repeat(n - task.endTime)
+  maybeFillGapAfter  = (task, n) => '<td class="gap"></td>'.repeat(n - task.endTime)
+  maybeFillGapAfter2 = (task, n) => '<td class="gap"></td>'.repeat(n - task.maxEndTime)
 }()
