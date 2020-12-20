@@ -1,7 +1,5 @@
 'use strict'
 
-const next = (arr, a)  => arr[arr.findIndex(x => x === a) + 1]
-
 class Task {
   static startTimeOrder  = tasks  => tasks.sort((a, b) => a.startTime  - b.startTime)
   static endTimeOrder    = tasks  => tasks.sort((a, b) => a.endTime    - b.endTime)
@@ -40,15 +38,12 @@ class Task {
     this.required.forEach(task => task.requiredFor.push(this))
   }
 
-  shiftRigthIn = (tasks, cMax) => {
-    this.maxEndTime = Math.min(this.minRequiredFor(cMax), this.minInList(tasks, cMax))
+  shiftRight = (next = {}, cMax) => {
+    this.maxEndTime = Math.min(this.minRequiredFor(cMax), next.maxStartTime || cMax)
     this.maxStartTime = this.maxEndTime - this.time
   }
 
   minRequiredFor = cMax => this.requiredFor.reduce(Task.minMaxStartTime, cMax)
-  minInList      = (tasks, cMax) => next(tasks, this) !== undefined
-    ? next(tasks, this).maxStartTime
-    : cMax
 
   getCriticalPath = () => this.critical !== undefined
     ? [...this.critical.getCriticalPath(), this]
