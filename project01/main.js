@@ -11,6 +11,7 @@ const z8 = new Task('Z8', 3,  [z5, z7])
 
 const tasks = [z7, z5, z2, z8, z1, z4, z6, z3]
 // const tasks = [z1, z2, z3, z4, z5, z6, z7, z8]
+// const tasks = [z8, z7, z6, z5, z4, z3, z2, z1]
 // tasks.forEach(task => console.log(task.toString()))
 // console.log('Tasks have a cycle?: ', haveCycle(tasks))
 
@@ -20,5 +21,5 @@ const tasks = [z7, z5, z2, z8, z1, z4, z6, z3]
 
 const machines = new TaskMaster().schedule(tasks)
 machines.forEach(m => console.log(m.toString()))
-gui.drawSchedule('table1', machines)
-gui.drawSchedule('table2', machines, Task.delayed)
+gui.drawNormalSchedule(machines)
+gui.drawDelayedSchedule(machines)
