@@ -1,7 +1,7 @@
 'use strict'
 
 const join = (acc, str) => acc + str
-const seq = (n, arr = []) => n < 0 ? arr : seq(n - 1, [n, ...arr])
+const seq  = (n, arr = []) => n < 0 ? arr : seq(n - 1, [n, ...arr])
 
 const gui = new class {
   table = document.getElementById('table')
