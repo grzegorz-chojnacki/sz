@@ -15,19 +15,19 @@ const gui = new class {
   }
 
   drawGraph = tasks => {
-    const data = {
-      nodes: tasks.map(task => ({ id: task.toString() })),
-      edges: tasks.flatMap(task => task.required
-        .map(r => ({ from: r.toString(), to: task.toString() })))
-    }
-    const chart = anychart.graph(data)
+    anychart.onDocumentReady(() => {
+      const data = Task.topologicalOrder(tasks).flatMap(task => task.required.map(r => ({
+        from: r.id,
+        to: task.id,
+        weight: task.time,
+      })))
 
-    const nodes = chart.nodes()
-    nodes.labels().enabled(true)
-    nodes.normal().height(20)
+      console.log(data)
+      const chart = anychart.sankey(data)
 
-    chart.title("Network Graph showing the battles in Game of Thrones")
-    chart.container('graph').draw()
+      chart.container('graph')
+      chart.draw()
+    })
   }
 
   drawSchedule(machines = [], context, delayStrategy) {
