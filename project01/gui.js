@@ -5,32 +5,57 @@ const seq  = (n, arr = []) => n < 0 ? arr : seq(n - 1, [n, ...arr])
 
 const gui = new class {
   graph           = document.getElementById('graph')
+  criticalPath    = document.getElementById('criticalPath')
   normalSchedule  = document.getElementById('table1')
   delayedSchedule = document.getElementById('table2')
 
-  draw(machines) {
-    this.drawGraph(machines.flatMap(m => m.tasks))
+  draw = machines => {
+    if (!machines) return
+    const tasks = Task.endTimeOrder(machines.flatMap(m => m.tasks))
+    this.drawGraph(tasks)
+    this.drawCriticalPath(tasks[tasks.length-1].getCriticalPath())
     this.drawSchedule(machines, this.normalSchedule, Task.normal)
     this.drawSchedule(machines, this.delayedSchedule, Task.delayed)
   }
 
   drawGraph = tasks => {
-    anychart.onDocumentReady(() => {
-      const data = Task.topologicalOrder(tasks).flatMap(task => task.required.map(r => ({
+    const data = {
+      nodes: tasks.map(task => ({ id: task.id, label: task.toString() })),
+      edges: tasks.flatMap(task => task.required.map(r => ({
         from: r.id,
         to: task.id,
-        weight: task.time,
-      })))
-
-      console.log(data)
-      const chart = anychart.sankey(data)
-
-      chart.container('graph')
-      chart.draw()
-    })
+        arrows: 'to',
+        color: task.critical === r ? 'red' : 'blue',
+      }))),
+      options: {
+        physics: false,
+        layout: {
+          hierarchical: {
+            enabled: true,
+            levelSeparation: 100,
+            nodeSpacing: 75,
+            treeSpacing: 100,
+            blockShifting: true,
+            edgeMinimization: true,
+            parentCentralization: true,
+            direction: 'LR',
+            sortMethod: 'directed',
+            shakeTowards: 'roots'
+          }
+        }
+      }
+    }
+    new vis.Network(graph, data)
   }
 
-  drawSchedule(machines = [], context, delayStrategy) {
+  drawCriticalPath = criticalPath => this.criticalPath.innerHTML = criticalPath
+    .map(this.makePathNode)
+    .reduce(join)
+
+  makePathNode = (task, i, tasks) =>
+    `${task.id}${ i < tasks.length - 1 ? ' -> ' : ''}`
+
+  drawSchedule = (machines = [], context, delayStrategy) => {
     const maxWidth = Machine.highestCMax(machines)
     context.innerHTML = this.makeTimeHeader(maxWidth) + machines
       .map(m => this.makeMachineRow(maxWidth)(m.id, m.tasks.map(delayStrategy)))

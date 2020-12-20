@@ -19,6 +19,7 @@ const next = (arr, a) => arr[arr.findIndex(x => x === a) + 1]
 
 class Task {
   static startTimeOrder   = tasks  => tasks.sort((a, b) => a.startTime  - b.startTime)
+  static endTimeOrder     = tasks  => tasks.sort((a, b) => a.entTime    - b.endTime)
   static topologicalOrder = tasks  => tasks.sort((a, b) => a.complexity - b.complexity)
   static intersects       = (a, b) => a.startTime < b.endTime && b.startTime < a.endTime
   static complexityDepth  = (prevMax, task) => Math.max(prevMax, task.complexity + 1)
@@ -61,8 +62,8 @@ class Task {
   }
 
   getCriticalPath = () => this.critical !== undefined
-    ? [this.critical, ...this.critical.getCriticalPath()]
-    : []
+    ? [...this.critical.getCriticalPath(), this]
+    : [this]
 
   toString = () => `${this.id}: ${this.time}`
 }

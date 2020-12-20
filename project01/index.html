@@ -2,15 +2,24 @@
 <html lang="en">
   <head><link rel="stylesheet" href="style.css"></head>
   <body>
-    <h2>Graf zadań</h2>
-    <section id="graph"></section>
-    <h2>Uszeregowanie podstawowe</h2>
-    <table id="table1"></table>
-    <h2>Uszeregowanie z opóźnieniami</h2>
-    <table id="table2"></table>
+    <section>
+      <h2>Graf zadań</h2>
+      <div id="graph"></div>
+    </section>
+    <section>
+      <h2>Ścieżka krytyczna</h2>
+      <span id="criticalPath"></span>
+    </section>
+    <section>
+      <h2>Uszeregowanie podstawowe</h2>
+      <table id="table1"></table>
+    </section>
+    <section>
+      <h2>Uszeregowanie z opóźnieniami</h2>
+      <table id="table2"></table>
+    </section>
   </body>
-  <script src="https://cdn.anychart.com/releases/8.9.0/js/anychart-core.min.js"></script>
-  <script src="https://cdn.anychart.com/releases/8.9.0/js/anychart-sankey.min.js"></script>
+  <script src="https://visjs.github.io/vis-network/standalone/umd/vis-network.min.js"></script>
   <script src="task.js"></script>
   <script src="machine.js"></script>
   <script src="gui.js"></script>
