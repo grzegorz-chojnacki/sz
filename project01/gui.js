@@ -10,9 +10,8 @@ const gui = new class {
   delayedSchedule = document.getElementById('table2')
 
   draw = machines => {
-    if (!machines) return
+    if (!machines || machines.length === 0) return gui.error('Nie znaleziono maszyn')
     const tasks = Task.endTimeOrder(machines.flatMap(m => m.tasks))
-    console.log(tasks)
     this.drawGraph(tasks)
     this.drawCriticalPath(tasks[tasks.length-1].getCriticalPath())
     this.drawSchedule(machines, this.normalSchedule,  Task.normal)
@@ -36,9 +35,6 @@ const gui = new class {
             levelSeparation: 100,
             nodeSpacing: 75,
             treeSpacing: 100,
-            blockShifting: true,
-            edgeMinimization: true,
-            parentCentralization: true,
             direction: 'LR',
             sortMethod: 'directed',
             shakeTowards: 'roots'
@@ -46,7 +42,7 @@ const gui = new class {
         }
       }
     }
-    new vis.Network(graph, data)
+    new vis.Network(this.graph, data)
   }
 
   drawCriticalPath = criticalPath => this.criticalPath.innerHTML = criticalPath
@@ -80,6 +76,11 @@ const gui = new class {
     : '<td class="gap"></td>'.repeat(task.startTime)
 
   format = task => `${task.id}`
+
+  error = (text, error = 'Coś poszło nie tak') => {
+    console.error(error)
+    document.body.innerHTML = `<h1>${text}</h1><p>${error}</p>`
+  }
 
   maybeFillGapAfter = (task, n) => '<td class="gap"></td>'.repeat(n - task.endTime)
 }()

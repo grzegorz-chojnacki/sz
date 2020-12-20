@@ -1,19 +1,10 @@
 'use strict'
 
-const push = (arr, a) => { arr.push(a); return a }
-
 class TaskMaster {
   machines = [ new Machine('M0') ]
 
   schedule = tasks => {
-    if (haveCycle(tasks)) return
-
-    tasks.map(task => this.getMachineFor(task).schedule(task))
-
-    this.machines.forEach(m => {
-      Task.startTimeOrder(m.tasks)
-      m.tasks.forEach(task => task.updateRequired())
-    })
+    tasks.forEach(task => this.getMachineFor(task).schedule(task))
 
     this.machines.forEach(m => m.tasks.slice()
       .reverse()
@@ -23,9 +14,9 @@ class TaskMaster {
   }
 
   getMachineFor = task => this.machines.find(m => m.canSchedule(task))
-    || this.addMachine()
+    || this.add(new Machine(`M${this.machines.length}`))
 
-  addMachine = () => push(this.machines, new Machine(`M${this.machines.length}`))
+  add = m => { this.machines.push(m); return m }
 }
 
 class Machine {
