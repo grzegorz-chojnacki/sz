@@ -22,7 +22,8 @@ class Task {
         tasks.push(new Task(node.id, node.time, required))
       })
     } catch (e) { gui.error('Błędny format listy zadań', e) }
-    return tasks
+
+  return Task.startTimeOrder(tasks)
   }
 
   constructor(id, time = 1, required = []) {

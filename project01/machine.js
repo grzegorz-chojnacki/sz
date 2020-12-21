@@ -3,7 +3,7 @@
 const schedule = tasks => {
   const machines = [ new Machine('M0') ]
   const add = m => { machines.push(m); return m }
-  const next = (arr, a)  => arr[arr.findIndex(x => x === a) + 1]
+  const next = (arr, a) => arr[arr.findIndex(x => x === a) + 1]
   const getMachineFor = task => machines.find(m => m.canSchedule(task))
     || add(new Machine(`M${machines.length}`))
 
@@ -12,6 +12,8 @@ const schedule = tasks => {
   machines.forEach(m => m.tasks.slice()
     .reverse()
     .forEach(task => task.shiftRight(next(m.tasks, task), Machine.highestCMax(machines))))
+
+  // machines.forEach(m => Task.startTimeOrder(m.tasks))
 
   return machines
 }

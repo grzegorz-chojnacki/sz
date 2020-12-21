@@ -12,6 +12,9 @@ const gui = new class {
   draw = machines => {
     if (!machines || machines.length === 0) return gui.error('Nie znaleziono maszyn')
     const tasks = Task.endTimeOrder(machines.flatMap(m => m.tasks))
+
+    if (tasks.length === 0) return gui.error('Brak zadań')
+
     this.drawGraph(tasks)
     this.drawCriticalPath(tasks[tasks.length-1].getCriticalPath())
     this.drawSchedule(machines, this.normalSchedule,  Task.normal)
