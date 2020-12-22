@@ -13,8 +13,6 @@ const schedule = tasks => {
     .reverse()
     .forEach(task => task.shiftRight(next(m.tasks, task), Machine.highestCMax(machines))))
 
-  // machines.forEach(m => Task.startTimeOrder(m.tasks))
-
   return machines
 }
 

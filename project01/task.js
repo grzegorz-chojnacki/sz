@@ -10,6 +10,14 @@ class Task {
   static delayed         = task => ({ ...task, startTime: task.maxStartTime, endTime: task.maxEndTime })
 
   static parseList = template => {
+    const notDistinct = (a, _, arr) => arr.indexOf(a) !== arr.lastIndexOf(a)
+
+    if (template.map(t => t.id).filter(notDistinct).length > 0)
+      return gui.error('Wykryto powtarzające się zadania')
+
+    if (template.some(t => t.time === 0))
+      return gui.error('Wykryto zadanie z czasem 0')
+
     const tasks = []
 
     try {
