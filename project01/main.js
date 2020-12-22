@@ -5,11 +5,11 @@ const tasks = Task.parseList([
   { id: 'Z2', time: 3 },
   { id: 'Z3', time: 4,  required: ['Z1', 'Z2'] },
 
-  // { id: 'Z4', time: 12, required: ['Z1', 'Z2'] },
-  // { id: 'Z5', time: 6,  required: ['Z3'] },
-  // { id: 'Z6', time: 11, required: ['Z3', 'Z4'] },
-  // { id: 'Z7', time: 2,  required: ['Z4'] },
-  // { id: 'Z8', time: 3,  required: ['Z5', 'Z7'] },
+  { id: 'Z4', time: 12, required: ['Z1', 'Z2'] },
+  { id: 'Z5', time: 6,  required: ['Z3'] },
+  { id: 'Z6', time: 11, required: ['Z3', 'Z4'] },
+  { id: 'Z7', time: 2,  required: ['Z4'] },
+  { id: 'Z8', time: 3,  required: ['Z5', 'Z7'] },
 
   // { id: 'Z9', time: 8,  required: ['Z3', 'Z2'] },
   // { id: 'ZA', time: 1,  required: ['Z6'] },
