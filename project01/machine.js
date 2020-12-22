@@ -1,11 +1,11 @@
 'use strict'
 
 const schedule = tasks => {
-  const machines = [ new Machine('M0') ]
+  const machines = [ new Machine('M1') ]
   const add = m => { machines.push(m); return m }
   const next = (arr, a) => arr[arr.findIndex(x => x === a) + 1]
   const getMachineFor = task => machines.find(m => m.canSchedule(task))
-    || add(new Machine(`M${machines.length}`))
+    || add(new Machine(`M${machines.length + 1}`))
 
   tasks.forEach(task => getMachineFor(task).schedule(task))
 
