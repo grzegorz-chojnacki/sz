@@ -3,33 +3,41 @@ body {
   font-size: 16px;
   font-family: monospace;
   text-align: center;
+  background-color: #16161C;
+  color: #BBBBBB;
 }
 
 section { margin: 0 auto 2em }
 
 #graph {
   height: 300px;
-  width: 800px;
   margin: 0 auto;
 }
 
+#criticalPath { color: #E95678 }
+
 table {
   margin: 0 auto 2em;
-  background-color: white;
-  border: 1px solid black;
+  color: #4C4D53;
+  border: 1px solid;
   border-collapse: collapse;
 }
 
 h2 { font-size: 1rem }
 
-td { text-align: left }
 th, td {
   min-width: 1.5em;
   padding: 0.5em;
-  border: 1px solid;
+  border: 1px solid #4C4D53;
+}
+
+th { color: #F09483 }
+td {
+  color: #FAB795;
+  text-align: left;
 }
 
 td.gap {
   border: none;
-  background-color: #00000010;
+  background-color: #BBBBBB10;
 }

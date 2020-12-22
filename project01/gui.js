@@ -23,12 +23,16 @@ const gui = new class {
 
   drawGraph = tasks => {
     const data = {
-      nodes: tasks.map(task => ({ id: task.id, label: task.toString() })),
+      nodes: tasks.map(task => ({
+        id: task.id,
+        label: task.toString(),
+        color: '#FAB795'
+      })),
       edges: tasks.flatMap(task => task.required.map(r => ({
         from: r.id,
         to: task.id,
         arrows: 'to',
-        color: task.critical === r ? 'red' : 'blue',
+        color: task.critical === r ? '#E95678' : '#FAB795',
       }))),
       options: {
         physics: false,
