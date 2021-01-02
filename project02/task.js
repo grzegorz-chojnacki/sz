@@ -43,8 +43,12 @@ class Task {
     this.required.forEach(task => task.successors.push(this))
   }
 
-  isSchedulable = () =>
+  isLabelable = () =>
     !this.hasLabel() && this.successors.every(task => task.hasLabel())
+
+  isSchedulableFor = scheduled =>
+    !scheduled.includes(this) &&
+    this.required.every(task => scheduled.includes(task))
 
   getSuccessorLabels = () => this.successors
     .filter(s => s.hasLabel())

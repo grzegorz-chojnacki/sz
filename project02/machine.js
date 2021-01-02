@@ -1,18 +1,34 @@
 'use strict'
 
+const zip = (a, b) => a.map((_, i) => [ a[i], b[i] ])
+
 const schedule = (tasks = []) => {
-  const machines = [ new Machine('M1'), new Machine('M2') ];
+  const machines = [ new Machine('M1'), new Machine('M2') ]
 
-  (function processTasks(i = 1) {
-    const schedulable = tasks.filter(task => task.isSchedulable())
-    if (schedulable.length > 0) {
-      const task = schedulable.sort(Task.lexicographicOrder)[0]
+  {(function labelTasks(i = 1) {
+    const labelable = tasks.filter(task => task.isLabelable())
+    if (labelable.length > 0) {
+      const task = labelable.sort(Task.lexicographicOrder)[0]
       task.label = i
-      return processTasks(i + 1)
+      return labelTasks(i + 1)
     }
-  })()
+  })()}
 
-  return tasks.sort(Task.labelOrder)
+  tasks.sort(Task.labelOrder)
+
+  {(function scheduleTasks(scheduled = []) {
+    const schedulable = tasks
+      .filter(task => task.isSchedulableFor(scheduled))
+      .slice(0, machines.length)
+
+    if (schedulable.length > 0) {
+      zip(schedulable, machines)
+        .map(([task, machine]) => machine.schedule(task))
+      scheduleTasks(scheduled.concat(schedulable))
+    }
+  })()}
+
+  return machines
 }
 
 class Machine {
@@ -21,5 +37,7 @@ class Machine {
     this.tasks = []
   }
 
-  toString = () => `${this.id}: [${this.tasks.map(task => task.toString())}]`
+  schedule = task => this.tasks.push(task)
+
+  toString = () => `${this.id}: [${this.tasks.map(task => task.label)}]`
 }
