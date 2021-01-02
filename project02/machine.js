@@ -32,6 +32,9 @@ const schedule = (tasks = []) => {
 }
 
 class Machine {
+  static cMax = machines => machines
+    .reduce((max, machine) => Math.max(max, machine.tasks.length), 0)
+
   constructor(id) {
     this.id = id
     this.tasks = []
