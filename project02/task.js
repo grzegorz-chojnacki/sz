@@ -20,8 +20,15 @@ class Task {
 
     return tasks
   }
-
-  static isSchedulable = task => !task.hasLabel() && task.requiredFor.every(t => t.hasLabel())
+  static label = task => task.label
+  static lexicographicOrder = (a, b) => {
+    return a.requiredFor.map(Task.label).sort().reverse().toString()
+      .localeCompare(
+           b.requiredFor.map(Task.label).sort().reverse().toString())
+  }
+  static lexicographicSort  = tasks => tasks.sort(Task.lexicographicOrder)
+  static isSchedulable      = task  => !task.hasLabel() && task.requiredFor.every(t => t.hasLabel())
+  static setSuccessors      = task  => task.requiredFor = task.requiredFor.filter(t => t.hasLabel())
 
   constructor(id, required = []) {
     this.id          = id
@@ -34,5 +41,5 @@ class Task {
   }
 
   hasLabel = () => this.label !== undefined
-  toString = () => `${this.id}:${this.label}`
+  toString = () => `${this.label}:[${this.requiredFor.map(task => task.label)}]`
 }
