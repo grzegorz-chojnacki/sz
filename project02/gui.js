@@ -1,7 +1,7 @@
 'use strict'
 
 const join = (acc, str) => acc + str
-const seq  = (n, arr = []) => n < 1 ? arr : seq(n - 1, [n, ...arr])
+const seq  = (n, arr = []) => n < 0 ? arr : seq(n - 1, [n, ...arr])
 
 const gui = new class {
   graph    = document.getElementById('graph')
@@ -21,7 +21,7 @@ const gui = new class {
     const data = {
       nodes: tasks.map(task => ({
         id: task.id,
-        label: task.id,
+        label: `${task.id}: ${task.label}`,
         color: '#FAB795'
       })),
       edges: tasks.flatMap(task => task.required.map(r => ({
@@ -57,7 +57,7 @@ const gui = new class {
 
   makeTimeHeader = n => `<tr>
       <th></th>
-      ${seq(n).map(time => `<th><div>${time}<div></th>`).reduce(join)}
+      ${seq(n - 1).map(time => `<th><div>${time}<div></th>`).reduce(join)}
     </tr>`
 
   makeMachineRow = (id, tasks) => `<tr>
