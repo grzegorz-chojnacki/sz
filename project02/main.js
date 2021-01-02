@@ -22,4 +22,4 @@ const tasks = Task.parseList([
   { id: 'Z19', required: ['Z11', 'Z14'] },
 ])
 
-console.log(schedule(tasks).map(t => t.toString()))
+gui.draw(schedule(tasks))
