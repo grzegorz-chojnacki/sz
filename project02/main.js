@@ -22,14 +22,4 @@ const tasks = Task.parseList([
   { id: 'Z19', required: ['Z11', 'Z14'] },
 ])
 
-const schedule = (tasks = [], i = 1) => {
-  const A = tasks.filter(task => task.isSchedulable())
-  if (A.length > 0) {
-    const Z = A.sort(Task.lexicographicOrder)[0]
-    Z.label = i
-    return schedule(tasks, i + 1)
-  } else return tasks
-}
-
-const scheduledTasks = schedule(tasks).sort(Task.labelOrder)
-console.log(scheduledTasks.map(t => t.toString()))
+console.log(schedule(tasks).map(t => t.toString()))
