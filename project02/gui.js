@@ -55,7 +55,10 @@ const gui = new class {
       .reduce(join)
   }
 
-  makeTimeHeader = n => `<tr><th></th>${seq(n).map(time => `<th>${time}</th>`).reduce(join)}</tr>`
+  makeTimeHeader = n => `<tr>
+      <th></th>
+      ${seq(n).map(time => `<th><div>${time}<div></th>`).reduce(join)}
+    </tr>`
 
   makeMachineRow = (id, tasks) => `<tr>
     <th>${id}</th>

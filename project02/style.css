@@ -25,12 +25,22 @@ table {
 h2 { font-size: 1rem }
 
 th, td {
-  min-width: 1.5em;
+  width: 4em;
+  height: 1em;
   padding: 0.5em;
   border: 1px solid #4C4D53;
+  position: relative;
 }
 
 th { color: #F09483 }
+th div {
+  position: absolute;
+  background-color: #16161C;
+  color: #4C4D53;
+  bottom: 0.5ch;
+  left: -0.5ch;
+}
+
 td {
   color: #FAB795;
   text-align: left;
