@@ -6,3 +6,36 @@ body {
   background-color: #16161C;
   color: #BBBBBB;
 }
+
+section { margin: 0 auto 2em }
+
+#graph {
+  height: 300px;
+  margin: 0 auto;
+}
+
+table {
+  margin: 0 auto 2em;
+  color: #4C4D53;
+  border: 1px solid;
+  border-collapse: collapse;
+}
+
+h2 { font-size: 1rem }
+
+th, td {
+  min-width: 1.5em;
+  padding: 0.5em;
+  border: 1px solid #4C4D53;
+}
+
+th { color: #F09483 }
+td {
+  color: #FAB795;
+  text-align: left;
+}
+
+td.gap {
+  border: none;
+  background-color: #BBBBBB10;
+}
