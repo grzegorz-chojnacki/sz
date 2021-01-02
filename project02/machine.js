@@ -1,29 +1,30 @@
 'use strict'
 
-const schedule = (tasks = []) => {
-  const machines = Machine.make(2)
-
-  {(function labelTasks(i = 1) {
+const schedule = (tasks = [], n) => {
+  const labelTasks = (i = 1) => {
     const labelable = tasks.filter(task => task.isLabelable())
     if (labelable.length > 0) {
       const task = labelable.sort(Task.lexicographicOrder)[0]
       task.label = i
-      return labelTasks(i + 1)
+      labelTasks(i + 1)
     }
-  })()}
+  }
 
-  tasks.sort(Task.labelOrder)
-
-  {(function scheduleTasks(scheduled = []) {
+  const machines = Machine.make(n)
+  const scheduleTasks = (alreadyScheduled = []) => {
     const schedulable = tasks
-      .filter(task => task.isSchedulableFor(scheduled))
+      .filter(task => task.isSchedulableFor(alreadyScheduled))
       .slice(0, machines.length)
 
     if (schedulable.length > 0) {
       machines.forEach((machine, i) => machine.schedule(schedulable[i]))
-      scheduleTasks(scheduled.concat(schedulable))
+      scheduleTasks(alreadyScheduled.concat(schedulable))
     }
-  })()}
+  }
+
+  labelTasks()
+  tasks.sort(Task.labelOrder)
+  scheduleTasks()
 
   return machines
 }
@@ -38,7 +39,6 @@ class Machine {
     this.tasks = []
   }
 
-  schedule = (task = Task.gap) => this.tasks.push(task)
-
+  schedule = task => this.tasks.push(task || Task.gap)
   toString = () => `${this.id}: [${this.tasks.map(task => task.label)}]`
 }
