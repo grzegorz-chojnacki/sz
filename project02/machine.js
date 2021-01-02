@@ -30,9 +30,9 @@ const schedule = (tasks = [], n) => {
 }
 
 class Machine {
-  static make = n => new Array(n).fill().map((_, i) => new Machine(`M${i + 1}`))
-  static cMax = machines => machines
-    .reduce((max, machine) => Math.max(max, machine.tasks.length), 0)
+  static make     = n => new Array(n).fill().map((_, i) => new Machine(`M${i + 1}`))
+  static cMax     = machines => machines.reduce((max, m) => Math.max(max, m.tasks.length), 0)
+  static allTasks = machines => machines.flatMap(m => m.tasks).filter(task => task != Task.gap)
 
   constructor(id) {
     this.id = id

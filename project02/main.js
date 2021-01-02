@@ -30,14 +30,8 @@ try {
 
   const machineNumber = 2
   const machines = schedule(tasks, machineNumber)
-
-  const labels = machines.flatMap(m => m.tasks)
-    .filter(t => t !== Task.gap)
-    .sort(Task.labelOrder)
-    .reverse()
-    .map(t => t.toString())
-
-  console.log(labels)
-
   gui.draw(machines)
+
+  const scheduledTasks = Machine.allTasks(machines).sort(Task.labelOrder).reverse()
+  console.log(scheduledTasks.map(t => t.toString()))
 } catch (e) { gui.error(e) }

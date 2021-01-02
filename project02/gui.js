@@ -9,11 +9,11 @@ const gui = new class {
 
   draw = (machines = []) => {
     if (machines.length === 0) throw new Error('Nie znaleziono maszyn')
-    const tasks = machines.flatMap(m => m.tasks)
+    const tasks = Machine.allTasks(machines)
 
     if (tasks.length === 0) throw new Error('Brak zadań')
 
-    this.drawGraph(tasks.filter(task => task != Task.gap))
+    this.drawGraph(tasks)
     this.drawSchedule(machines)
   }
 
@@ -61,15 +61,15 @@ const gui = new class {
     </tr>`
 
   makeMachineRow = (id, tasks) => `<tr>
-    <th>${id}</th>
-    ${tasks.map(this.makeTaskCell).reduce(join)}
-  </tr>`
+      <th>${id}</th>
+      ${tasks.map(this.makeTaskCell).reduce(join)}
+    </tr>`
 
   makeTaskCell = task => task === Task.gap
     ? `<td class="gap"></td>`
     : `<td>${task.id}</td>`
 
-  error = (error) => {
+  error = error => {
     console.error(error)
     document.body.innerHTML = `<h1>${error}</h1>`
   }

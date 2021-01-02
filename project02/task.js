@@ -8,13 +8,13 @@ class Task {
       throw new Error('Wykryto powtarzające się zadania')
 
     const tasks = []
-
     nodes.forEach(node => {
-      const required = tasks.filter(task => (node.required || []).includes(task.id))
+      const required = node.required?.map(requiredId => {
+        const found = tasks.find(task => task.id === requiredId)
 
-      if ((node.required || []).length !== required.length)
-        throw new Error(`Nie znaleziono wszystkich wymaganych zadań dla ${node.id}`)
-
+        if (found) return found
+        else throw new Error(`Nie znaleziono zadania ${requiredId} dla ${node.id}`)
+      })
       tasks.push(new Task(node.id, required))
     })
 
@@ -28,11 +28,11 @@ class Task {
     else return a - b
   }
 
-  static gap   = new Task('GAP')
-  static label = task => task.label
-  static labelOrder = (a, b) => b.label - a.label
-  static lexicographicOrder = (a, b) => Task
-    .deepSort(a.getSuccessorLabels(), (b.getSuccessorLabels()))
+  static gap                = new Task('GAP')
+  static label              = task   => task.label
+  static labelOrder         = (a, b) => b.label - a.label
+  static lexicographicOrder = (a, b) =>
+    Task.deepSort(a.getSuccessorLabels(), (b.getSuccessorLabels()))
 
   constructor(id, required = []) {
     this.id         = id
