@@ -21,12 +21,18 @@ class Task {
     return tasks
   }
 
+  static isSchedulable = task => !task.hasLabel() && task.requiredFor.every(t => t.hasLabel())
+
   constructor(id, required = []) {
-    this.id       = id
-    this.time     = 1
-    this.label    = undefined
-    this.required = required
+    this.id          = id
+    this.time        = 1
+    this.label       = undefined
+    this.required    = required
+    this.requiredFor = []
+
+    this.required.forEach(task => task.requiredFor.push(this))
   }
 
+  hasLabel = () => this.label !== undefined
   toString = () => `${this.id}:${this.label}`
 }
