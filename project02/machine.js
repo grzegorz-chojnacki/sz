@@ -1,7 +1,7 @@
 'use strict'
 
 const schedule = (tasks = []) => {
-  const machines = [ new Machine('M1'), new Machine('M2') ]
+  const machines = Machine.make(2)
 
   {(function labelTasks(i = 1) {
     const labelable = tasks.filter(task => task.isLabelable())
@@ -29,6 +29,7 @@ const schedule = (tasks = []) => {
 }
 
 class Machine {
+  static make = n => new Array(n).fill().map((_, i) => new Machine(`M${i + 1}`))
   static cMax = machines => machines
     .reduce((max, machine) => Math.max(max, machine.tasks.length), 0)
 
