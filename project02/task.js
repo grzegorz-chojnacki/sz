@@ -20,26 +20,33 @@ class Task {
 
     return tasks
   }
-  static label = task => task.label
-  static lexicographicOrder = (a, b) => {
-    return a.requiredFor.map(Task.label).sort().reverse().toString()
-      .localeCompare(
-           b.requiredFor.map(Task.label).sort().reverse().toString())
+
+  static deepSort = ([a, ...as], [b, ...bs]) => {
+    if (a === undefined) return -1
+    else if (b === undefined) return 1
+    else if (a === b) return Task.deepSort(as, bs)
+    else return a - b
   }
-  static lexicographicSort  = tasks => tasks.sort(Task.lexicographicOrder)
-  static isSchedulable      = task  => !task.hasLabel() && task.requiredFor.every(t => t.hasLabel())
-  static setSuccessors      = task  => task.requiredFor = task.requiredFor.filter(t => t.hasLabel())
+
+  static label = task => task.label
+  static lexicographicOrder = (a, b) => Task.deepSort(a.getComparableSList(), (b.getComparableSList()))
+  static isSchedulable      = task   => !task.hasLabel() && task.successors.every(t => t.hasLabel())
 
   constructor(id, required = []) {
-    this.id          = id
-    this.time        = 1
-    this.label       = undefined
-    this.required    = required
-    this.requiredFor = []
+    this.id         = id
+    this.time       = 1
+    this.label      = undefined
+    this.required   = required
+    this.successors = []
 
-    this.required.forEach(task => task.requiredFor.push(this))
+    this.required.forEach(task => task.successors.push(this))
   }
 
+  getComparableSList = () => this.successors
+    .filter(s => s.hasLabel())
+    .map(Task.label)
+    .sort((a, b) => b - a)
+
   hasLabel = () => this.label !== undefined
-  toString = () => `${this.label}:[${this.requiredFor.map(task => task.label)}]`
+  toString = () => `${this.id}:[${this.getComparableSList()}]`
 }
