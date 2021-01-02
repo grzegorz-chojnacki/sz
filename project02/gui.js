@@ -13,7 +13,7 @@ const gui = new class {
 
     if (tasks.length === 0) throw new Error('Brak zadań')
 
-    this.drawGraph(tasks)
+    this.drawGraph(tasks.filter(task => task != Task.gap))
     this.drawSchedule(machines)
   }
 
@@ -51,18 +51,20 @@ const gui = new class {
   drawSchedule = (machines = []) => {
     const maxWidth = Machine.cMax(machines)
     this.schedule.innerHTML = this.makeTimeHeader(maxWidth) + machines
-      .map(m => this.makeMachineRow(maxWidth)(m.id, m.tasks))
+      .map(m => this.makeMachineRow(m.id, m.tasks))
       .reduce(join)
   }
 
   makeTimeHeader = n => `<tr><th></th>${seq(n).map(time => `<th>${time}</th>`).reduce(join)}</tr>`
 
-  makeMachineRow = n => (id, tasks) => `<tr>
+  makeMachineRow = (id, tasks) => `<tr>
     <th>${id}</th>
     ${tasks.map(this.makeTaskCell).reduce(join)}
   </tr>`
 
-  makeTaskCell = task => `<td>${task.id}</td>`
+  makeTaskCell = task => task === Task.gap
+    ? `<td class="gap"></td>`
+    : `<td>${task.id}</td>`
 
   error = (error) => {
     console.error(error)

@@ -20,6 +20,12 @@ try {
     { id: 'Z18', required: ['Z13', 'Z14'] },
     { id: 'Z17', required: ['Z10', 'Z12', 'Z16', 'Z18'] },
     { id: 'Z19', required: ['Z11', 'Z14'] },
+
+    // { id: 'Z1' },
+    // { id: 'Z2', required: ['Z1'] },
+    // { id: 'Z3', required: ['Z2'] },
+    // { id: 'Z4', required: ['Z2', 'Z1'] },
+    // { id: 'Z5', required: ['Z2', 'Z4', 'Z3'] },
   ])
 
   gui.draw(schedule(tasks))

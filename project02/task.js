@@ -28,6 +28,7 @@ class Task {
     else return a - b
   }
 
+  static gap   = new Task('GAP')
   static label = task => task.label
   static labelOrder = (a, b) => b.label - a.label
   static lexicographicOrder = (a, b) => Task

@@ -1,7 +1,5 @@
 'use strict'
 
-const zip = (a, b) => a.map((_, i) => [ a[i], b[i] ])
-
 const schedule = (tasks = []) => {
   const machines = [ new Machine('M1'), new Machine('M2') ]
 
@@ -22,8 +20,7 @@ const schedule = (tasks = []) => {
       .slice(0, machines.length)
 
     if (schedulable.length > 0) {
-      zip(schedulable, machines)
-        .map(([task, machine]) => machine.schedule(task))
+      machines.forEach((machine, i) => machine.schedule(schedulable[i]))
       scheduleTasks(scheduled.concat(schedulable))
     }
   })()}
@@ -40,7 +37,7 @@ class Machine {
     this.tasks = []
   }
 
-  schedule = task => this.tasks.push(task)
+  schedule = (task = Task.gap) => this.tasks.push(task)
 
   toString = () => `${this.id}: [${this.tasks.map(task => task.label)}]`
 }
