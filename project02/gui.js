@@ -22,7 +22,8 @@ const gui = new class {
       nodes: tasks.map(task => ({
         id: task.id,
         label: `${task.id}: ${task.label}`,
-        color: '#FAB795'
+        color: '#FAB795',
+        font: { face: 'monospace', vadjust: 1 }
       })),
       edges: tasks.flatMap(task => task.required.map(r => ({
         from: r.id,
@@ -31,6 +32,7 @@ const gui = new class {
         color: '#E95678'
       }))),
       options: {
+        edges: { arrows: { to: { scaleFactor: 0.5 }}},
         physics: false,
         layout: {
           hierarchical: {
