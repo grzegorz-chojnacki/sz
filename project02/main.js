@@ -32,6 +32,9 @@ try {
   const machines = schedule(tasks, machineNumber)
   gui.draw(machines)
 
-  const scheduledTasks = Machine.allTasks(machines).sort(Task.labelOrder).reverse()
+  const scheduledTasks = Machine.allTasks(machines)
+    .filter(Task.notGap)
+    .sort(Task.labelOrder)
+    .reverse()
   console.log(scheduledTasks.map(t => t.toString()))
 } catch (e) { gui.error(e) }

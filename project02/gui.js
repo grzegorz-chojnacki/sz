@@ -9,8 +9,8 @@ const gui = new class {
 
   draw = (machines = []) => {
     if (machines.length === 0) throw new Error('Nie znaleziono maszyn')
-    const tasks = Machine.allTasks(machines)
 
+    const tasks = Machine.allTasks(machines).filter(Task.notGap)
     if (tasks.length === 0) throw new Error('Brak zadań')
 
     this.drawGraph(tasks)

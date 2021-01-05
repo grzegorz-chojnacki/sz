@@ -21,22 +21,21 @@ class Task {
     return tasks
   }
 
-  static deepSort = ([a, ...as], [b, ...bs]) => {
+  static deepCompare = ([a, ...as], [b, ...bs]) => {
     if (a === undefined) return -1
     else if (b === undefined) return 1
-    else if (a === b) return Task.deepSort(as, bs)
+    else if (a === b) return Task.deepCompare(as, bs)
     else return a - b
   }
 
   static gap                = new Task('GAP')
-  static label              = task   => task.label
+  static notGap             = task => task !== Task.gap
   static labelOrder         = (a, b) => b.label - a.label
-  static lexicographicOrder = (a, b) =>
-    Task.deepSort(a.getSuccessorLabels(), (b.getSuccessorLabels()))
+  static lexicographicOrder = (a, b) => Task.deepCompare(
+    a.getSuccessorLabels(), b.getSuccessorLabels())
 
   constructor(id, required = []) {
     this.id         = id
-    this.time       = 1
     this.label      = undefined
     this.required   = required
     this.successors = []
@@ -52,8 +51,7 @@ class Task {
     this.required.every(task => scheduled.includes(task))
 
   getSuccessorLabels = () => this.successors
-    .filter(s => s.hasLabel())
-    .map(Task.label)
+    .map(task => task.label)
     .sort((a, b) => b - a)
 
   hasLabel = () => this.label !== undefined
