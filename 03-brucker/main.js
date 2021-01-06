@@ -34,10 +34,6 @@ try {
     { id:  'Z2', deadline: 20, required: ['Z5'] },
     { id:  'Z1', deadline: 16, required: ['Z3', 'Z2', 'Z6'] },
   ])
-  console.log(tasks)
   const machineNumber = 4
-  const machines = schedule(tasks, machineNumber)
-  console.log(machines)
-  gui.draw(machines)
-
-} catch (e) { console.error(e) }
+  gui.draw(schedule(tasks, machineNumber))
+} catch (e) { gui.error(e) }

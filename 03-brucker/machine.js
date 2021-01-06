@@ -1,11 +1,13 @@
 'use strict'
 const schedule = (tasks = [], machineNumber) => {
   const machines = Machine.make(machineNumber)
-  tasks.filter(Task.isRoot).forEach(task => task.updateDeadline())
+
+  if (!Task.isInTree(tasks)) throw new Error('Graf nie jest drzewem wchodzącym')
+  else tasks.find(Task.isRoot).floodPriority()
 
   const scheduleTasks = (scheduled = []) => {
     const schedulable = tasks
-      .filter(task => task.isSchedulableFor(scheduled))
+      .filter(task => task.isSchedulableAfter(scheduled))
       .sort(Task.priorityOrder)
       .slice(0, machineNumber)
 

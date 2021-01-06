@@ -26,6 +26,7 @@ class Task {
   static isRoot        = task => task.successor === undefined
   static priorityOrder = (a, b) => b.priority - a.priority
   static lMax          = (max, task) => Math.max(max, task.time - task.deadline)
+  static isInTree      = tasks => tasks.filter(Task.isRoot).length === 1
 
   constructor(id, deadline, required = []) {
     this.id        = id
@@ -38,15 +39,15 @@ class Task {
     this.required.forEach(task => task.successor = this)
   }
 
-  updateDeadline = () => {
+  floodPriority = () => {
     this.priority = (this.successor !== undefined)
       ? Math.max(1 + this.successor.priority, 1 - this.deadline)
       : 1 - this.deadline
 
-    this.required.forEach(task => task.updateDeadline())
+    this.required.forEach(task => task.floodPriority())
   }
 
-  isSchedulableFor = scheduled =>
+  isSchedulableAfter = scheduled =>
     !scheduled.includes(this) &&
     this.required.every(task => scheduled.includes(task))
 

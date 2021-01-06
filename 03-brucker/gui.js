@@ -14,7 +14,7 @@ const gui = new class {
     const tasks = Machine.allTasks(machines).filter(Task.notGap)
     if (tasks.length === 0) throw new Error('Brak zadań')
 
-    this.drawGraph(tasks)
+    this.drawGraph(tasks.sort(Task.priorityOrder))
     this.lmax.innerHTML = Machine.lMax(machines)
     this.drawSchedule(machines)
   }
@@ -44,7 +44,7 @@ const gui = new class {
             treeSpacing: 100,
             direction: 'LR',
             sortMethod: 'directed',
-            shakeTowards: 'roots'
+            shakeTowards: 'leaves'
           }
         }
       }
@@ -75,8 +75,8 @@ const gui = new class {
         <ul class="details">
           <li>C:  ${task.time}</li>
           <li>d:  ${task.deadline}</li>
-          <li>d*: ${task.priority}</li>
           <li>L:  ${task.time - task.deadline}</li>
+          <li>*: ${task.priority}</li>
         </ul>
       </td>`
 
