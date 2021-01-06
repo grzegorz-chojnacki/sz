@@ -50,3 +50,23 @@ td.gap {
   border: none;
   background-color: #BBBBBB10;
 }
+
+td:hover > .details { visibility: visible }
+.details:hover { visibility: hidden !important }
+.details {
+  font-size: 0.9rem;
+  box-sizing: border-box;
+  visibility: hidden;
+  position: absolute;
+  background-color: #16161C;
+  color: #E95678;
+  border: 1px solid;
+  list-style-type: none;
+  margin: 0;
+  padding: 0.5em;
+  z-index: 999;
+  left: -1px;
+  top: 2.2rem;
+  width: calc(100% + 2px);
+  box-shadow: 0 0 5px black;
+}
