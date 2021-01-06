@@ -4,7 +4,7 @@ const join = (acc, str) => acc + str
 const seq  = (n, arr = []) => n < 0 ? arr : seq(n - 1, [n, ...arr])
 
 const gui = new class {
-  // graph    = document.getElementById('graph')
+  graph    = document.getElementById('graph')
   schedule = document.getElementById('schedule')
   lmax     = document.getElementById('lmax')
 
@@ -14,7 +14,7 @@ const gui = new class {
     const tasks = Machine.allTasks(machines).filter(Task.notGap)
     if (tasks.length === 0) throw new Error('Brak zadań')
 
-    // this.drawGraph(tasks)
+    this.drawGraph(tasks)
     this.lmax.innerHTML = Machine.lMax(machines)
     this.drawSchedule(machines)
   }
@@ -23,7 +23,7 @@ const gui = new class {
     const data = {
       nodes: tasks.map(task => ({
         id: task.id,
-        label: `${task.id}: ${task.label}`,
+        label: task.id,
         color: '#FAB795',
         font: { face: 'monospace', vadjust: 1 }
       })),
@@ -39,8 +39,8 @@ const gui = new class {
         layout: {
           hierarchical: {
             enabled: true,
-            levelSeparation: 100,
-            nodeSpacing: 75,
+            levelSeparation: 75,
+            nodeSpacing: 50,
             treeSpacing: 100,
             direction: 'LR',
             sortMethod: 'directed',
@@ -74,8 +74,8 @@ const gui = new class {
     : `<td>${task.id}
         <ul class="details">
           <li>C:  ${task.time}</li>
-          <li>D:  ${task.deadline}</li>
-          <li>D*: ${task.priority}</li>
+          <li>d:  ${task.deadline}</li>
+          <li>d*: ${task.priority}</li>
           <li>L:  ${task.time - task.deadline}</li>
         </ul>
       </td>`

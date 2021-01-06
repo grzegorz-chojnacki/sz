@@ -30,6 +30,6 @@ class Machine {
     this.tasks = []
   }
 
-  schedule = (task = Task.gap) => this.tasks.push(task.withTime(this.tasks.length))
+  schedule = (task = Task.gap) => this.tasks.push(task.withTime(this.tasks.length + 1))
   toString = () => `${this.id}: [${this.tasks.map(task => task.id)}]`
 }

@@ -13,7 +13,9 @@ section { margin: 0 auto 2em }
   height: 400px;
   width: 800px;
   margin: 0 auto;
+  cursor: grab;
 }
+#graph:active { cursor: grabbing }
 
 table {
   margin: 0 auto 2em;
@@ -30,6 +32,7 @@ th, td {
   padding: 0.5em;
   border: 1px solid #4C4D53;
   position: relative;
+  cursor: crosshair;
 }
 
 th { color: #F09483 }
@@ -65,8 +68,12 @@ td:hover > .details { visibility: visible }
   margin: 0;
   padding: 0.5em;
   z-index: 999;
-  left: -1px;
-  top: 2.2rem;
-  width: calc(100% + 2px);
+  left: 0;
+  top: 2.1rem;
+  width: 100%;
   box-shadow: 0 0 5px black;
+}
+.details > li {
+  text-align: justify;
+  text-align-last: justify;
 }
