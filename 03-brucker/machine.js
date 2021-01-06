@@ -1,9 +1,21 @@
 'use strict'
-
-const schedule = (tasks = [], n) => {
+const schedule = (tasks = [], machineNumber) => {
+  const machines = Machine.make(machineNumber)
   tasks.filter(Task.isRoot).forEach(task => task.updateDeadline())
 
-  const machines = Machine.make(n)
+  const scheduleTasks = (scheduled = []) => {
+    const schedulable = tasks
+      .filter(task => task.isSchedulableFor(scheduled))
+      .sort(Task.deadlineOrder)
+      .slice(0, machineNumber)
+
+    if (schedulable.length > 0) {
+      machines.forEach((machine, i) => machine.schedule(schedulable[i]))
+      scheduleTasks(scheduled.concat(schedulable))
+    }
+  }
+
+  scheduleTasks()
   return machines
 }
 

@@ -21,9 +21,10 @@ class Task {
     return tasks
   }
 
-  static gap    = new Task('GAP')
-  static notGap = task => task !== Task.gap
-  static isRoot = task => task.successor === undefined
+  static gap           = new Task('GAP')
+  static notGap        = task => task !== Task.gap
+  static isRoot        = task => task.successor === undefined
+  static deadlineOrder = (a, b) => b.deadline - a.deadline
 
   constructor(id, deadline, required = []) {
     this.id        = id
@@ -41,6 +42,10 @@ class Task {
 
     this.required.forEach(task => task.updateDeadline())
   }
+
+  isSchedulableFor = scheduled =>
+    !scheduled.includes(this) &&
+    this.required.every(task => scheduled.includes(task))
 
   toString = () => `${this.id} (${this.deadline})`
 }
