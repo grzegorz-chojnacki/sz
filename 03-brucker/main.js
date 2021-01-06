@@ -38,5 +38,6 @@ try {
   const machineNumber = 4
   const machines = schedule(tasks, machineNumber)
   console.log(machines)
+  console.log(Machine.lMax(machines))
 
 } catch (e) { console.error(e) }

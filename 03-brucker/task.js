@@ -21,23 +21,26 @@ class Task {
     return tasks
   }
 
-  static gap           = new Task('GAP')
+  static gap           = new Task('GAP', Infinity)
   static notGap        = task => task !== Task.gap
   static isRoot        = task => task.successor === undefined
-  static deadlineOrder = (a, b) => b.deadline - a.deadline
+  static priorityOrder = (a, b) => b.priority - a.priority
+  static lMax          = (max, task) => Math.max(max, task.time - task.deadline)
 
   constructor(id, deadline, required = []) {
     this.id        = id
     this.deadline  = deadline
     this.required  = required
     this.successor = undefined
+    this.priority  = undefined
+    this.time      = undefined
 
     this.required.forEach(task => task.successor = this)
   }
 
   updateDeadline = () => {
-    this.deadline = (this.successor !== undefined)
-      ? Math.max(1 + this.successor.deadline, 1 - this.deadline)
+    this.priority = (this.successor !== undefined)
+      ? Math.max(1 + this.successor.priority, 1 - this.deadline)
       : 1 - this.deadline
 
     this.required.forEach(task => task.updateDeadline())
@@ -47,5 +50,6 @@ class Task {
     !scheduled.includes(this) &&
     this.required.every(task => scheduled.includes(task))
 
+  withTime = time => { this.time = time; return this }
   toString = () => `${this.id} (${this.deadline})`
 }

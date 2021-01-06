@@ -6,7 +6,7 @@ const schedule = (tasks = [], machineNumber) => {
   const scheduleTasks = (scheduled = []) => {
     const schedulable = tasks
       .filter(task => task.isSchedulableFor(scheduled))
-      .sort(Task.deadlineOrder)
+      .sort(Task.priorityOrder)
       .slice(0, machineNumber)
 
     if (schedulable.length > 0) {
@@ -22,6 +22,7 @@ const schedule = (tasks = [], machineNumber) => {
 class Machine {
   static make     = n => new Array(n).fill().map((_, i) => new Machine(`M${i + 1}`))
   static cMax     = machines => machines.reduce((max, m) => Math.max(max, m.tasks.length), 0)
+  static lMax     = machines => Machine.allTasks(machines).reduce(Task.lMax, -Infinity)
   static allTasks = machines => machines.flatMap(m => m.tasks)
 
   constructor(id) {
@@ -29,6 +30,6 @@ class Machine {
     this.tasks = []
   }
 
-  schedule = task => this.tasks.push(task || Task.gap)
+  schedule = (task = Task.gap) => this.tasks.push(task.withTime(this.tasks.length))
   toString = () => `${this.id}: [${this.tasks.map(task => task.id)}]`
 }
