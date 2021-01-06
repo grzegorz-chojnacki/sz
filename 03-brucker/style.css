@@ -1,0 +1,52 @@
+body {
+  margin: 2em;
+  font-size: 16px;
+  font-family: monospace;
+  text-align: center;
+  background-color: #16161C;
+  color: #BBBBBB;
+}
+
+section { margin: 0 auto 2em }
+
+#graph {
+  height: 400px;
+  width: 800px;
+  margin: 0 auto;
+}
+
+table {
+  margin: 0 auto 2em;
+  color: #4C4D53;
+  border: 1px solid;
+  border-collapse: collapse;
+}
+
+h2 { font-size: 1rem }
+
+th, td {
+  width: 4em;
+  height: 1em;
+  padding: 0.5em;
+  border: 1px solid #4C4D53;
+  position: relative;
+}
+
+th { color: #F09483 }
+th div {
+  position: absolute;
+  background-color: #16161C;
+  color: #4C4D53;
+  bottom: 0.5ch;
+  left: -0.5ch;
+}
+
+td {
+  color: #FAB795;
+  text-align: left;
+}
+
+td.gap {
+  border: none;
+  background-color: #BBBBBB10;
+}
