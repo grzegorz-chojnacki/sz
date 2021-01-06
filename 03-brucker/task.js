@@ -23,11 +23,23 @@ class Task {
 
   static gap    = new Task('GAP')
   static notGap = task => task !== Task.gap
+  static isRoot = task => task.successor === undefined
 
   constructor(id, deadline, required = []) {
-    this.id         = id
-    this.deadline   = deadline
-    this.required   = required
+    this.id        = id
+    this.deadline  = deadline
+    this.required  = required
+    this.successor = undefined
+
+    this.required.forEach(task => task.successor = this)
+  }
+
+  updateDeadline = () => {
+    this.deadline = (this.successor !== undefined)
+      ? Math.max(1 + this.successor.deadline, 1 - this.deadline)
+      : 1 - this.deadline
+
+    this.required.forEach(task => task.updateDeadline())
   }
 
   toString = () => `${this.id} (${this.deadline})`

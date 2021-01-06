@@ -35,4 +35,8 @@ try {
     { id:  'Z1', deadline: 16, required: ['Z3', 'Z2', 'Z6'] },
   ])
   console.log(tasks)
+  const machineNumber = 4
+  const machines = schedule(tasks, machineNumber)
+  console.log(machines)
+
 } catch (e) { console.error(e) }
