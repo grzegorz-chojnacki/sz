@@ -73,9 +73,9 @@ const gui = new class {
     ? `<td class="gap"></td>`
     : `<td>${task.id}
         <ul class="details">
-          <li>C:  ${task.time}</li>
-          <li>d:  ${task.deadline}</li>
-          <li>L:  ${task.time - task.deadline}</li>
+          <li>C: ${task.time}</li>
+          <li>d: ${task.deadline}</li>
+          <li>L: ${task.time - task.deadline}</li>
           <li>*: ${task.priority}</li>
         </ul>
       </td>`
