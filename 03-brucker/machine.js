@@ -2,8 +2,10 @@
 const schedule = (tasks = [], machineNumber) => {
   const machines = Machine.make(machineNumber)
 
-  if (!Task.isInTree(tasks)) throw new Error('Graf nie jest drzewem wchodzącym')
-  else tasks.find(Task.isRoot).floodPriority()
+  const [root, ...rest] = tasks.filter(Task.isRoot)
+
+  if (rest.length > 0) throw new Error('Graf ma kilka korzeni')
+  else root.floodPriority()
 
   const scheduleTasks = (scheduled = []) => {
     const schedulable = tasks

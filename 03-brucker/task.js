@@ -26,7 +26,6 @@ class Task {
   static isRoot        = task => task.successor === undefined
   static priorityOrder = (a, b) => b.priority - a.priority
   static lMax          = (max, task) => Math.max(max, task.time - task.deadline)
-  static isInTree      = tasks => tasks.filter(Task.isRoot).length === 1
 
   constructor(id, deadline, required = []) {
     this.id        = id
@@ -36,7 +35,12 @@ class Task {
     this.priority  = undefined
     this.time      = undefined
 
-    this.required.forEach(task => task.successor = this)
+    this.required.forEach(task => task.setSuccessor(this))
+  }
+
+  setSuccessor = task => {
+    if (this.successor === undefined) this.successor = task
+    else throw new Error(`Zadanie ${this.id} jest poprzednikiem kilku zadań`)
   }
 
   floodPriority = () => {
